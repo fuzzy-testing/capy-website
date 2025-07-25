@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web App</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center bg-white p-12 rounded-lg shadow-lg">
+        <h1 id="main-heading" class="text-4xl font-bold text-gray-800 mb-4">Hello, World!</h1>
+        <p class="text-gray-600 mb-6">This is a simple web app for your GitHub Actions exercise.</p>
+        <button id="action-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+            Click Me!
+        </button>
+    </div>
+
+    <script>
+        // Simple JavaScript to make the page interactive
+        const button = document.getElementById('action-button');
+        const heading = document.getElementById('main-heading');
+        
+        let clickCount = 0;
+
+        button.addEventListener('click', () => {
+            clickCount++;
+            heading.textContent = `Button Clicked ${clickCount} time(s)!`;
+            // Change button color on click for visual feedback
+            button.classList.remove('bg-blue-500');
+            button.classList.add('bg-green-500');
+        });
+    </script>
+</body>
+</html>
