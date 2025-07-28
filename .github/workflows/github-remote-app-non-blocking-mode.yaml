@@ -1,6 +1,6 @@
 # Remote App in non-blocking mode
 
-name: CI
+name: CI Remote App Non Blocking Mode
 
 on:
   push:
