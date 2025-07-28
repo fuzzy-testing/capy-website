@@ -65,7 +65,7 @@ jobs:
             echo "Current scan status: ${SCAN_STATUS}"
             echo "-----------------------------------"
       
-            if [[ "${SCAN_STATUS}" == "started" || "${SCAN_STATUS}" == "queued" ]]; then
+            if [[ "${SCAN_STATUS}" == "started" || "${SCAN_STATUS}" == "queued" || "${SCAN_STATUS}" == "initializing" ]]; then
               echo "Scan is running or queued. Waiting 300 seconds..."
             else
               echo "Scan is no longer running or queued. Finishing."
