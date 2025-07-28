@@ -53,9 +53,13 @@ jobs:
             SCAN_OUTPUT=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} | tail -1)
             echo ${SCAN_OUTPUT}
             echo "-----------------------------------"
+            echo "JSON"
             echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON) 
+            echo "YAML"
             echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o YAML)
+            echo "TABLE"
             echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o TABLE)
+            echo "IDS_ONLY"
             echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o IDS_ONLY)
 
             SCAN_STATUS=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.[0].status')
