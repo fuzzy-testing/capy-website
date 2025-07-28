@@ -50,17 +50,29 @@ jobs:
           # Wait until scan ends
           while true; do
             echo "-----------------------------------"
-            SCAN_OUTPUT=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} | tail -1)
-            echo ${SCAN_OUTPUT}
-            echo "-----------------------------------"
-            SCAN_STATUS=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.[0].status')
-            if [ $SCAN_STATUS == "started" ] || [ $SCAN_STATUS == "queued" ]; then
-              echo "Scan is running or queued!";
-            else
-              echo "Scan is not running... finishing"
-              break;
+            # First, get the raw output from the Probely CLI
+            API_RESPONSE=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON)
+      
+            # Default status to "initializing" in case of non-JSON response
+            SCAN_STATUS="initializing"
+      
+            # Check if the response looks like JSON before parsing with jq
+            # Valid JSON for this command should start with '['
+            if [[ "${API_RESPONSE}" == \[* ]]; then
+              SCAN_STATUS=$(echo "${API_RESPONSE}" | jq -r '.[0].status')
             fi
-            sleep 300;
+            
+            echo "Current scan status: ${SCAN_STATUS}"
+            echo "-----------------------------------"
+      
+            if [[ "${SCAN_STATUS}" == "started" || "${SCAN_STATUS}" == "queued" ]]; then
+              echo "Scan is running or queued. Waiting 300 seconds..."
+            else
+              echo "Scan is no longer running or queued. Finishing."
+              break
+            fi
+      
+            sleep 300
           done
 
       # Step 4: Optional logic - abort the pipeline if there are any HIGH risk vulnerabilities.
