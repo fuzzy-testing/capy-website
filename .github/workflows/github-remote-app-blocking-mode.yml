@@ -66,13 +66,15 @@ jobs:
             echo "-----------------------------------"
       
             if [[ "${SCAN_STATUS}" == "started" || "${SCAN_STATUS}" == "queued" || "${SCAN_STATUS}" == "initializing" ]]; then
+              echo "Current scan status: ${SCAN_STATUS}"
               echo "Scan is running or queued. Waiting 300 seconds..."
             else
+              echo "Current scan status: ${SCAN_STATUS}"
               echo "Scan is no longer running or queued. Finishing."
               break
             fi
       
-            sleep 300
+            sleep 5
           done
 
       # Step 4: Optional logic - abort the pipeline if there are any HIGH risk vulnerabilities.
