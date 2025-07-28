@@ -1,6 +1,6 @@
-# Remote App in blocking mode
+# CI Remote App in blocking mode
 
-name: Remote App in blocking mode
+name: CI Remote App in blocking mode
 
 on:
   push:
