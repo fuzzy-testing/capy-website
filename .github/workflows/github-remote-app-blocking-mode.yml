@@ -52,7 +52,8 @@ jobs:
             echo "-----------------------------------"
             # First, get the raw output from the Probely CLI
             API_RESPONSE=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON)
-      
+            echo ${API_RESPONSE}
+            
             # Default status to "initializing" in case of non-JSON response
             SCAN_STATUS="initializing"
       
