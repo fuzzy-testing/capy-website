@@ -1,12 +1,12 @@
-# CI Remote App in blocking mode
+# Remote App in blocking mode
 
-name: CI Remote App in blocking mode
+name: CI
 
 on:
-  # push:
-    # branches: [ "main" ]
-  # pull_request:
-    # branches: [ "main" ]
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -50,32 +50,18 @@ jobs:
           # Wait until scan ends
           while true; do
             echo "-----------------------------------"
-            # First, get the raw output from the Probely CLI
-            API_RESPONSE=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON)
-            echo ${API_RESPONSE}
-            
-            # Default status to "initializing" in case of non-JSON response
-            SCAN_STATUS="initializing"
-      
-            # Check if the response looks like JSON before parsing with jq
-            # Valid JSON for this command should start with '['
-            if [[ "${API_RESPONSE}" == \[* ]]; then
-              SCAN_STATUS=$(echo "${API_RESPONSE}" | jq -r '.[0].status')
-            fi
-            
-            echo "Current scan status: ${SCAN_STATUS}"
+            SCAN_OUTPUT=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} | tail -1)
+            echo ${SCAN_OUTPUT}
             echo "-----------------------------------"
-      
-            if [[ "${SCAN_STATUS}" == "started" || "${SCAN_STATUS}" == "queued" || "${SCAN_STATUS}" == "initializing" ]]; then
-              echo "Current scan status: ${SCAN_STATUS}"
-              echo "Scan is running or queued. Waiting 300 seconds..."
+            echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON) 
+            SCAN_STATUS=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.[0].status')
+            if [ $SCAN_STATUS == "started" ] || [ $SCAN_STATUS == "queued" ]; then
+              echo "Scan is running or queued!";
             else
-              echo "Current scan status: ${SCAN_STATUS}"
-              echo "Scan is no longer running or queued. Finishing."
-              break
+              echo "Scan is not running... finishing"
+              break;
             fi
-      
-            sleep 5
+            sleep 30;
           done
 
       # Step 4: Optional logic - abort the pipeline if there are any HIGH risk vulnerabilities.
