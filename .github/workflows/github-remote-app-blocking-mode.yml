@@ -60,7 +60,7 @@ jobs:
               echo "Scan is not running... finishing"
               break;
             fi
-            sleep 30;
+            sleep 300;
           done
 
       # Step 4: Optional logic - abort the pipeline if there are any HIGH risk vulnerabilities.
