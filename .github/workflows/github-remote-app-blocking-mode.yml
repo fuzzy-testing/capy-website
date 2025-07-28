@@ -54,7 +54,10 @@ jobs:
             echo ${SCAN_OUTPUT}
             echo "-----------------------------------"
             echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON) 
-            echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o)
+            echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o YAML)
+            echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o TABLE)
+            echo $(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o IDS_ONLY)
+
             SCAN_STATUS=$(probely scans get ${SCAN_ID} --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.[0].status')
             if [ $SCAN_STATUS == "started" ] || [ $SCAN_STATUS == "queued" ]; then
               echo "Scan is running or queued!";
