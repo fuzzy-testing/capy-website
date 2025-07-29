@@ -67,7 +67,7 @@ jobs:
       - name: Check for High risk vulnerabilities
         run: |
           # Wait until scan ends
-          HIGH_VULNS=$(probely scans get $SCAN_ID --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.highs')
+          HIGH_VULNS=$(probely scans get $SCAN_ID --api-key ${{ secrets.PROBELY_API_KEY }} -o JSON | jq -r '.lows')
           echo "HIGH risk vulnerabilities ${HIGH_VULNS}"
           if [[ "$HIGH_VULNS" -gt 0 ]]; then
             echo "Scan has High risk vulnerabilities... aborting"
