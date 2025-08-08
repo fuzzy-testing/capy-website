@@ -1,5 +1,5 @@
 # Sample workflow for scanning a target with Probely
-name: Scan a target with Probely
+name: Scan a target with Probely QA Env
 
 on:
   # Runs on pushes targeting the default branch
