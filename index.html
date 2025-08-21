@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vulnerable Web App</title>
+    <title>Login Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -12,32 +12,53 @@
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="text-center bg-white p-12 rounded-lg shadow-lg w-full max-w-md">
-        <h1 id="main-heading" class="text-4xl font-bold text-gray-800 mb-4 break-words">Hello, World!</h1>
-        <p class="text-gray-600 mb-6">Enter text or a script below to see the vulnerability.</p>
+    <div class="bg-white p-12 rounded-lg shadow-lg w-full max-w-sm">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Login</h1>
         
-        <input type="text" id="user-input" class="border border-gray-300 p-2 rounded-md w-full mb-4" placeholder="Try: <script>alert('XSS!')<\/script>">
-        
-        <button id="action-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
-            Update Heading
-        </button>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                <input type="text" id="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            
+            <p id="error-message" class="text-red-500 text-xs italic mb-4 hidden">Invalid username or password.</p>
+
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-full transition duration-300">
+                Log In
+            </button>
+        </form>
     </div>
 
     <script>
-        const button = document.getElementById('action-button');
-        const heading = document.getElementById('main-heading');
-        const userInput = document.getElementById('user-input');
+        const form = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
 
-        button.addEventListener('click', () => {
-            const content = userInput.value;
-            
-            // VULNERABLE LINE: Using .innerHTML to set content from user input
-            // This allows arbitrary HTML/JavaScript to be injected and executed.
-            heading.innerHTML = content;
-            
-            // Change button color on click for visual feedback
-            button.classList.remove('bg-blue-500');
-            button.classList.add('bg-green-500');
+        form.addEventListener('submit', (event) => {
+            // Prevent the form from submitting the traditional way
+            event.preventDefault();
+
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            // Hardcoded credentials
+            const isUser1 = (username === 'user1' && password === 'password1');
+            const isUser2 = (username === 'user2' && password === 'password2');
+
+            // Check if credentials match either user
+            if (isUser1 || isUser2) {
+                // If login is successful, redirect to the success page
+                window.location.href = 'success.html';
+            } else {
+                // If login fails, show an error message
+                errorMessage.classList.remove('hidden');
+            }
         });
     </script>
 </body>
